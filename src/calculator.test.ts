@@ -39,3 +39,6 @@ test("Delimiters can be of any length with the following format: “//[delimiter
 test("Allow multiple delimiters like this: “//[delim1][delim2]\\n” for example “//[*][%]\\n1*2%3” should return 6.", () => {
   expect(add("//[*][%]\n1*2%3")).toBe(6);
 });
+test("Make sure you can also handle multiple delimiters with length longer than one char. For example: “//[***][%%%]\\n1***2%%%3” should return 6.", () => {
+  expect(add("//[***][%%%]\n1***2%%%3")).toBe(6);
+});
