@@ -6,8 +6,17 @@ export function add(numbers: string): number {
   const delimiters = [",", "\n"];
   if (numbers.startsWith("//")) {
     const delimiterEndIndex = numbers.indexOf("\n");
-    const customDelimiter = numbers.substring(2, delimiterEndIndex);
-    delimiters.push(customDelimiter);
+    const delimiterSection = numbers.substring(2, delimiterEndIndex);
+
+    if (delimiterSection.startsWith("[") && delimiterSection.endsWith("]")) {
+      const customDelimiters = delimiterSection
+        .slice(1, -1)
+        .split("][")
+        .map((d) => d.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")); // Escape special regex characters
+      delimiters.push(...customDelimiters);
+    } else {
+      delimiters.push(delimiterSection);
+    }
     numbers = numbers.substring(delimiterEndIndex + 1);
   }
 
