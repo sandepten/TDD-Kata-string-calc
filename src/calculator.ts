@@ -13,5 +13,13 @@ export function add(numbers: string): number {
 
   const regex = new RegExp(`[${delimiters.join("")}]`);
   const numArray = numbers.split(regex).map((num) => parseInt(num, 10));
+
+  const negativeNumbers = numArray.filter((num) => num < 0);
+  if (negativeNumbers.length > 0) {
+    throw new Error(
+      `negative numbers not allowed ${negativeNumbers.join(",")}`,
+    );
+  }
+
   return numArray.reduce((acc, curr) => acc + curr, 0);
 }
