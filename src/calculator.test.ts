@@ -27,3 +27,7 @@ test("Calling add with a negative number will throw an exception: 'negative numb
 test("Calling add with multiple negative numbers will throw an exception: 'negative numbers not allowed <negative_number1>,<negative_number2>'", () => {
   expect(() => add("2,-4,3,-5")).toThrow("negative numbers not allowed -4,-5");
 });
+
+test("Numbers bigger than 1000 should be ignored, so adding 2 + 1001 = 2", () => {
+  expect(add("2,1001")).toBe(2);
+});
