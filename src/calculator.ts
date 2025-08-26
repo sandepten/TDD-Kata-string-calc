@@ -1,35 +1,34 @@
 export function add(numbers: string): number {
-  if (numbers === "") {
-    return 0;
-  }
+  if (!numbers) return 0;
 
-  const delimiters = [",", "\n"];
+  let delimiters = [",", "\n"];
   if (numbers.startsWith("//")) {
     const delimiterEndIndex = numbers.indexOf("\n");
-    const delimiterSection = numbers.substring(2, delimiterEndIndex);
+    const delimiterSection = numbers.slice(2, delimiterEndIndex);
 
     if (delimiterSection.startsWith("[") && delimiterSection.endsWith("]")) {
-      const customDelimiters = delimiterSection
-        .slice(1, -1)
-        .split("][")
-        .map((d) => d.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")); // Escape special regex characters
-      delimiters.push(...customDelimiters);
+      delimiters = delimiters.concat(
+        delimiterSection
+          .slice(1, -1)
+          .split("][")
+          .map((d) => d.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")),
+      );
     } else {
       delimiters.push(delimiterSection);
     }
-    numbers = numbers.substring(delimiterEndIndex + 1);
+    numbers = numbers.slice(delimiterEndIndex + 1);
   }
 
   const regex = new RegExp(`[${delimiters.join("")}]`);
-  const numArray = numbers.split(regex).map((num) => parseInt(num, 10));
+  const numArray = numbers.split(regex).map(Number);
 
   const negativeNumbers = numArray.filter((num) => num < 0);
-  if (negativeNumbers.length > 0) {
+  if (negativeNumbers.length) {
     throw new Error(
       `negative numbers not allowed ${negativeNumbers.join(",")}`,
     );
   }
-  const filteredNumbers = numArray.filter((num) => num <= 1000);
-
-  return filteredNumbers.reduce((sum, num) => sum + num, 0);
+  return numArray
+    .filter((num) => num <= 1000)
+    .reduce((sum, num) => sum + num, 0);
 }
