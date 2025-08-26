@@ -20,6 +20,7 @@ export function add(numbers: string): number {
       `negative numbers not allowed ${negativeNumbers.join(",")}`,
     );
   }
+  const filteredNumbers = numArray.filter((num) => num <= 1000);
 
-  return numArray.reduce((acc, curr) => acc + curr, 0);
+  return filteredNumbers.reduce((sum, num) => sum + num, 0);
 }
